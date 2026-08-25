@@ -6,12 +6,15 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HotelUpdateRequestProducer {
 
-    private static final String TOPIC = "booking-topic";
+    @Value("${kafka.topic.hotel}")
+    private String bookingTopic;
+
     private static final Logger log = LoggerFactory.getLogger(HotelUpdateRequestProducer.class);
 
     private final KafkaProducer<String, Booking> producer;
@@ -24,7 +27,7 @@ public class HotelUpdateRequestProducer {
         log.info("reached send booking");
         ProducerRecord<String, Booking> record =
                 new ProducerRecord<>(
-                        TOPIC,
+                        bookingTopic,
                         booking
                 );
 
